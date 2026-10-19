@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [{ "header": "referer", "operation": "set", "value": "https://www.youtube-nocookie.com/" }]
+    },
+    "condition": { "urlFilter": "||www.youtube-nocookie.com/embed/*ytnf=1", "resourceTypes": ["sub_frame"] }
+  }
+]

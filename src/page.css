@@ -1,0 +1,49 @@
+/* Page-level rules. Everything is gated on html classes set by main.js, so a disabled
+   extension leaves YouTube untouched. */
+
+/* Boot: black screen + red spinner until the overlay paints. */
+html.ytnf-boot::after {
+  content: ""; position: fixed; inset: 0; z-index: 2147483646; background: #141414 no-repeat center / 64px
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='20' fill='none' stroke='%23e50914' stroke-width='4' stroke-dasharray='90 40' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 25 25' to='360 25 25' dur='0.9s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E");
+}
+
+/* Overlay routes: our UI owns the page, YouTube renders hidden underneath. */
+html.ytnf-overlay, html.ytnf-overlay body { background: #141414 !important; overflow-x: hidden !important; overflow-y: auto !important; }
+html.ytnf-overlay ytd-app { display: none !important; }
+html.ytnf-overlay body { min-height: 0 !important; }
+html.ytnf-overlay.ytnf-modal, html.ytnf-overlay.ytnf-modal body { overflow: hidden !important; }
+
+/* Watch route: YouTube's real player, full-bleed, with its chrome replaced by ours. */
+html.ytnf-watch, html.ytnf-watch body { overflow: hidden !important; background: #000 !important; }
+html.ytnf-watch :is(#masthead-container, tp-yt-app-drawer#guide, ytd-mini-guide-renderer, #secondary, #below, #chat-container, ytd-watch-flexy #cinematics) { display: none !important; }
+html.ytnf-watch :is(ytd-app, ytd-page-manager, ytd-watch-flexy, #columns, #primary, #primary-inner, #player, #player-container-outer,
+  #player-container-inner, #player-container, #ytd-player, #ytd-player > #container, #full-bleed-container, #player-full-bleed-container) {
+  contain: none !important; transform: none !important; filter: none !important; will-change: auto !important;
+}
+html.ytnf-watch #movie_player {
+  position: fixed !important; inset: 0 !important; width: 100vw !important; height: 100vh !important;
+  z-index: 2000 !important; background: #000 !important;
+}
+html.ytnf-watch #movie_player .html5-video-container,
+html.ytnf-watch #movie_player video.html5-main-video {
+  width: 100% !important; height: 100% !important; left: 0 !important; top: 0 !important;
+}
+html.ytnf-watch #movie_player video.html5-main-video { object-fit: contain !important; }
+
+html.ytnf-watch #movie_player:not(.ad-showing) :is(.ytp-chrome-top, .ytp-chrome-bottom, .ytp-gradient-top, .ytp-gradient-bottom) { display: none !important; }
+html.ytnf-watch #movie_player :is(.ytp-ce-element, .ytp-cards-teaser, .ytp-cards-button, .ytp-paid-content-overlay, .ytp-spinner,
+  .ytp-bezel, .ytp-bezel-text-wrapper, .ytp-endscreen-content, .ytp-autonav-endscreen-countdown-overlay, .ytp-iv-player-content,
+  .iv-branding, .annotation, .ytp-suggested-action, .ytp-featured-product, .ytp-pause-overlay, .ytp-doubletap-ui-legacy,
+  .ytp-tooltip, .ytp-player-content .ytp-autonav-toggle-button-container, .ytp-overlay-bottom-right, .ytp-fullerscreen-edu-button) { display: none !important; }
+
+/* Netflix-style subtitles: bare white text with a soft shadow. */
+html.ytnf-watch .caption-window { background: transparent !important; }
+html.ytnf-watch .ytp-caption-segment {
+  background: transparent !important; color: #fff !important; font-weight: 500 !important;
+  font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  text-shadow: #000 0 0 7px, #000 0 0 2px, #000 0 0 1px !important;
+}
+
+/* YouTube dialogs ("Are you still watching?", age gates) must stay reachable above our controls. */
+html.ytnf-watch :is(ytd-popup-container, tp-yt-iron-overlay-backdrop) { position: relative; z-index: 2147483647 !important; }
+html.ytnf-watch :is(yt-mealbar-promo-renderer, ytd-mealbar-promo-renderer) { display: none !important; }

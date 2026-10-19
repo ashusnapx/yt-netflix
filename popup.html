@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>YouFlix</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; width: 300px; background: #141414; color: #fff; font: 14px/1.4 "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  header { padding: 18px 20px 10px; }
+  h1 { margin: 0; font: 900 30px/1 Impact, "Bebas Neue", "Arial Narrow Bold", sans-serif; color: #e50914; letter-spacing: 1px; transform: scaleY(1.1); }
+  p.sub { margin: 6px 0 0; color: #808080; font-size: 12px; }
+  label { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-top: 1px solid #2a2a2a; cursor: pointer; }
+  label small { display: block; color: #808080; font-size: 12px; }
+  input { appearance: none; width: 38px; height: 22px; border-radius: 11px; background: #4d4d4d; position: relative; flex: none; cursor: pointer; transition: background .2s; margin: 0; }
+  input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  input:checked { background: #e50914; }
+  input:checked::after { transform: translateX(16px); }
+  input:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+</style>
+</head>
+<body>
+  <header><h1>YOUFLIX</h1><p class="sub">Netflix-style YouTube</p></header>
+  <label>
+    <span>Netflix mode<small>Off restores the classic YouTube look</small></span>
+    <input type="checkbox" id="enabled">
+  </label>
+  <label>
+    <span>"Who's watching?" screen<small>Once per browser session</small></span>
+    <input type="checkbox" id="profileGate">
+  </label>
+  <label>
+    <span>Autoplay previews<small>Muted trailers on the billboard and on hover</small></span>
+    <input type="checkbox" id="previews">
+  </label>
+  <script src="popup.js"></script>
+</body>
+</html>

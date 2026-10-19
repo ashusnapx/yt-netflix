@@ -1,0 +1,73 @@
+{
+  "manifest_version": 3,
+  "name": "YouFlix — Netflix UI for YouTube",
+  "version": "1.0.0",
+  "description": "Turns YouTube into a Netflix-style experience: billboard hero, sliding rows, hover previews, detail modals and a Netflix-style player.",
+  "minimum_chrome_version": "111",
+  "permissions": [
+    "storage",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://www.youtube-nocookie.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YouFlix"
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "src/bridge.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "src/icons.js",
+        "src/data.js",
+        "src/ui.js",
+        "src/player.js",
+        "src/main.js"
+      ],
+      "css": [
+        "src/page.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/ui.css",
+        "preview.html",
+        "preview.js"
+      ],
+      "matches": [
+        "https://www.youtube.com/*"
+      ]
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "embed_referer",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  }
+}
