@@ -96,6 +96,30 @@
   }
 
   const text = x => x?.simpleText ?? x?.runs?.map(r => r.text).join('') ?? '';
+  const mp = () => document.getElementById('movie_player');
+  const str = (x, max = 40) => typeof x === 'string' && x.length <= max ? x : '';
+
+  // Only these player methods may be driven from the content script.
+  const PLAYER_FNS = new Set(['playVideo', 'pauseVideo', 'seekTo', 'setVolume', 'mute', 'unMute', 'setPlaybackRate', 'setPlaybackQualityRange', 'nextVideo']);
+
+  function playerState() {
+    const p = mp();
+    const r = p?.getPlayerResponse?.();
+    if (!r) return null;
+    const audioNames = new Map((r.streamingData?.adaptiveFormats ?? []).filter(f => f.audioTrack).map(f => [f.audioTrack.id, f.audioTrack.displayName]));
+    const cur = p.isSubtitlesOn?.() ? p.getOption?.('captions', 'track') : null;
+    return {
+      id: p.getVideoData?.()?.video_id ?? '',
+      quality: p.getPlaybackQuality?.() ?? '',
+      qualities: (p.getAvailableQualityData?.() ?? []).filter(q => q.isPlayable !== false && q.quality !== 'auto')
+        .map(q => ({ id: q.quality, label: q.qualityLabel, tag: q.paygatedQualityDetails?.paygatedIndicatorText ?? '' })),
+      captions: (r.captions?.playerCaptionsTracklistRenderer?.captionTracks ?? [])
+        .map(t => ({ code: t.languageCode, kind: t.kind ?? '', vss: t.vssId ?? '', name: text(t.name) })),
+      caption: cur?.languageCode ? { code: cur.languageCode, kind: cur.kind ?? '' } : null,
+      audio: audioNames.size > 1 ? [...audioNames].map(([id, name]) => ({ id, name })) : [],
+      audioId: p.getAudioTrack?.()?.id ?? '',
+    };
+  }
 
   const handlers = {
     nav: ({ url, browseId }) => navigate(url, browseId),
@@ -110,6 +134,28 @@
       actions: [add ? { addedVideoId: videoId, action: 'ACTION_ADD_VIDEO' } : { removedVideoId: videoId, action: 'ACTION_REMOVE_VIDEO_BY_VIDEO_ID' }],
     }).then(() => true),
     like: ({ videoId, like }) => innertube(like ? 'like/like' : 'like/removelike', { target: { videoId } }).then(() => true),
+    pcall: ({ fn, args }) => {
+      if (!PLAYER_FNS.has(fn)) throw new Error(`player method not allowed: ${fn}`);
+      const p = mp();
+      if (typeof p?.[fn] !== 'function') return false;
+      p[fn](...(Array.isArray(args) ? args.filter(a => ['string', 'number', 'boolean'].includes(typeof a)) : []));
+      return true;
+    },
+    pstate: () => playerState(),
+    volume: () => { const p = mp(); return p?.getVolume ? { volume: p.getVolume(), muted: !!p.isMuted?.() } : null; },
+    captions: ({ code, kind }) => {
+      const p = mp();
+      if (!p?.setOption) return false;
+      if (!str(code)) { if (p.isSubtitlesOn?.()) p.toggleSubtitles(); return true; }
+      p.setOption('captions', 'track', { languageCode: str(code), ...(str(kind) && { kind: str(kind) }) });
+      return true;
+    },
+    audio: ({ id }) => {
+      const p = mp();
+      const t = p?.getAvailableAudioTracks?.().find(x => x.id === str(id, 80));
+      if (t) p.setAudioTrack(t);
+      return !!t;
+    },
   };
 
   window.addEventListener('message', async e => {

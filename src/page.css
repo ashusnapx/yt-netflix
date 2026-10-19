@@ -34,7 +34,10 @@ html.ytnf-watch #movie_player:not(.ad-showing) :is(.ytp-chrome-top, .ytp-chrome-
 html.ytnf-watch #movie_player :is(.ytp-ce-element, .ytp-cards-teaser, .ytp-cards-button, .ytp-paid-content-overlay, .ytp-spinner,
   .ytp-bezel, .ytp-bezel-text-wrapper, .ytp-endscreen-content, .ytp-autonav-endscreen-countdown-overlay, .ytp-iv-player-content,
   .iv-branding, .annotation, .ytp-suggested-action, .ytp-featured-product, .ytp-pause-overlay, .ytp-doubletap-ui-legacy,
-  .ytp-tooltip, .ytp-player-content .ytp-autonav-toggle-button-container, .ytp-overlay-bottom-right, .ytp-fullerscreen-edu-button) { display: none !important; }
+  .ytp-tooltip, .ytp-large-play-button, .ytp-cued-thumbnail-overlay, .ytp-player-content .ytp-autonav-toggle-button-container, .ytp-overlay-bottom-right, .ytp-fullerscreen-edu-button) { display: none !important; }
+
+/* Error / age-gate / "sign in to confirm" screens must cover the player, not sit below it. */
+html.ytnf-watch #movie_player .ytp-error { position: absolute !important; inset: 0 !important; z-index: 60 !important; }
 
 /* Netflix-style subtitles: bare white text with a soft shadow. */
 html.ytnf-watch .caption-window { background: transparent !important; }
@@ -43,6 +46,10 @@ html.ytnf-watch .ytp-caption-segment {
   font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   text-shadow: #000 0 0 7px, #000 0 0 2px, #000 0 0 1px !important;
 }
+
+/* Lift subtitles above our control bar while it is showing, as Netflix does. */
+html.ytnf-watch .ytp-caption-window-container { transition: transform .3s ease !important; }
+html.ytnf-watch.ytnf-ui .ytp-caption-window-container { transform: translateY(-110px) !important; }
 
 /* YouTube dialogs ("Are you still watching?", age gates) must stay reachable above our controls. */
 html.ytnf-watch :is(ytd-popup-container, tp-yt-iron-overlay-backdrop) { position: relative; z-index: 2147483647 !important; }

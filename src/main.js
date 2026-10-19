@@ -27,6 +27,16 @@ html.classList.add('ytnf-on', 'ytnf-boot');
 setModeClass(routeOf(new URL(location.href)));
 // Registered at document_start so it runs before YouTube's own hotkey handlers and can stop them.
 window.addEventListener('keydown', e => onKey(e), true);
+// Some YouTube builds act on keyup/keypress too; swallow the rest of any key press we handled.
+const handledKeys = new Set();
+for (const type of ['keyup', 'keypress']) {
+  window.addEventListener(type, e => {
+    if (!handledKeys.has(e.code)) return;
+    if (type === 'keyup') handledKeys.delete(e.code);
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }, true);
+}
 
 let host = null, viewEl = null, pending = null, active = false;
 let cur = { key: '', route: null };
@@ -94,7 +104,7 @@ function onKey(e) {
     if (e.key === 'Escape') { path[0].value = ''; path[0].blur(); setSearchOpen(false); }
     return;
   }
-  if (cur.route === 'watch' && Player.key(e)) { e.preventDefault(); e.stopImmediatePropagation(); }
+  if (cur.route === 'watch' && Player.key(e)) { handledKeys.add(e.code); e.preventDefault(); e.stopImmediatePropagation(); }
 }
 
 function start(settings) {

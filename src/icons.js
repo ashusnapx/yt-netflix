@@ -28,6 +28,7 @@ const ICON = {
   speed: svg('<path fill="currentColor" fill-rule="evenodd" d="M19.07 19.07A10 10 0 1 0 4.93 4.93a10 10 0 0 0 14.14 14.14m1.41 1.41A12 12 0 1 0 3.52 3.52a12 12 0 0 0 16.96 16.96M11.7 13.7 17 8.4 15.6 7l-5.3 5.3zM4 13h3v-2H4zm13 0h3v-2h-3zM11 4v3h2V4z"/>'),
   fsEnter: svg('<path fill="currentColor" d="M0 5a2 2 0 0 1 2-2h7v2H2v4H0zm22 0h-7V3h7a2 2 0 0 1 2 2v4h-2zM2 15v4h7v2H2a2 2 0 0 1-2-2v-4zm20 4v-4h2v4a2 2 0 0 1-2 2h-7v-2z"/>'),
   fsExit: svg('<path fill="currentColor" d="M24 8h-5V3h-2v5a2 2 0 0 0 2 2h5zM0 16h5v5h2v-5a2 2 0 0 0-2-2H0zm7-8V3H5v5H0v2h5a2 2 0 0 0 2-2m10 13v-5h7v-2h-5a2 2 0 0 0-2 2v5z"/>'),
+  quality: svg('<rect x="1.5" y="4.5" width="21" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><text x="12" y="15.4" text-anchor="middle" fill="currentColor" font-size="8.5" font-weight="800" font-family="Arial,sans-serif">HD</text>'),
   replay: svg('<path fill="currentColor" d="M12 4a8 8 0 1 1-8 8H2a10 10 0 1 0 3-7.14V2H3v6a1 1 0 0 0 1 1h6V7H6.34A8 8 0 0 1 12 4"/>'),
 };
 

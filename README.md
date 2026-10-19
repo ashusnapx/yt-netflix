@@ -32,7 +32,10 @@ YouFlix is a Chrome extension that gives YouTube a Netflix-style interface. You 
 | **New & Popular** with a **Top 10** row drawn with large outlined numbers | ![New & Popular](docs/img/new-popular.jpg) |
 | **Search** results laid out as a grid, with "Explore titles related to" channel links | ![Search](docs/img/search.jpg) |
 | **Channel pages** shown as a series: billboard, Latest Episodes, the channel's shelves and playlists | ![Channel](docs/img/channel.jpg) |
-| **Netflix-style player**: red scrubber with frame previews, ±10 s, volume, Next Episode, Episodes, Subtitles, Speed, Fullscreen | ![Player](docs/img/player.jpg) |
+| **Netflix-style player**: red scrubber with frame previews, ±10 s, volume, Next Episode, Episodes, Subtitles, Quality, Speed, Fullscreen | ![Player](docs/img/player.jpg) |
+| **Video quality**: Auto or any resolution the video offers, up to 4K. Your pick carries over to the next videos in the session | ![Quality](docs/img/player-quality.jpg) |
+| **Subtitles**: every caption language the video has, including auto-generated ones, plus an Audio column for videos with dubbed tracks | ![Subtitles](docs/img/player-subtitles.jpg) |
+| **Episodes / Up Next** panel inside the player | ![Up Next](docs/img/player-episodes.jpg) |
 | **Playback speed** panel | ![Speed](docs/img/player-speed.jpg) |
 | **"You're watching"** screen that appears after 5 seconds paused | ![Pause screen](docs/img/pause-screen.jpg) |
 
@@ -118,11 +121,13 @@ Press **Play** anywhere to open the full-screen player. Move the mouse to bring 
 - **Time** at the right of the scrubber shows how much is left.
 - **Next Episode** (⏭) plays YouTube's next video. A white **Next Episode** button also appears during the last 20 seconds.
 - **Episodes** (stacked squares) lists the current playlist, or Up Next if you aren't watching a playlist.
-- **Subtitles** (speech bubble) turns YouTube captions on and off. Captions use Netflix's look: plain white text with a soft shadow.
+- **Audio & Subtitles** (speech bubble): pick a caption language, an auto-generated track or Off. Videos with dubbed audio also get an Audio column. Captions use Netflix's look (plain white text with a soft shadow) and move up while the control bar is showing.
+- **Quality** (HD): Auto or a fixed resolution. A fixed choice is re-applied to the next videos until you close the tab.
 - **Speed** (gauge): 0.5× to 1.5×.
+- Panels close as soon as you pick an option.
 - **Fullscreen** (corners), or double-click the video.
 
-YouTube ads play as usual. During an ad, YouFlix hides its controls so YouTube's **Skip** button stays clickable.
+YouTube ads play as usual. During an ad, YouFlix hides its controls so YouTube's **Skip** button stays clickable. YouTube's error, age-check and sign-in screens also show through, with the ← button still available.
 
 ---
 
@@ -220,7 +225,6 @@ Click the ↻ reload icon on the YouFlix card in `chrome://extensions`, then rel
 ## Known limitations
 
 - Each row shows what one YouTube page returns, about 20 to 40 titles. Rows don't scroll infinitely.
-- Subtitles can be switched on and off, but caption *language* is still chosen in YouTube's own menu (press `C`, then use the YouTube settings).
 - Shorts, YouTube Studio and the account settings pages keep the normal YouTube design.
 - YouFlix is an **unofficial fan project**. It isn't affiliated with Netflix or YouTube, and all video content belongs to its creators.
 

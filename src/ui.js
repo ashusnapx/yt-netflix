@@ -524,7 +524,7 @@ function openModal(id) {
       <div>${eps.map((e, i) => `<div class="ep${e.id === id ? ' cur' : ''}" data-act="play" data-id="${e.id}">
         <div class="n">${i + 1}</div>
         <div class="th"><img loading="lazy" src="${thumb(e.id)}" alt=""><div class="circle play">${ic('play')}</div></div>
-        <div class="tx"><div class="top"><span>${esc(e.title)}</span><span>${runtime(parseDuration(e.duration))}</span></div><p>${esc([e.age, e.views].filter(Boolean).join(' • '))}</p></div>
+        <div class="tx"><div class="eprow"><span>${esc(e.title)}</span><span>${runtime(parseDuration(e.duration))}</span></div><p>${esc([e.age, e.views].filter(Boolean).join(' • '))}</p></div>
       </div>`).join('')}</div>`);
   }).catch(err => {
     if (modal?.id === id) setHTML(node.querySelector('.content'), `<p class="empty">Couldn't load details. ${esc(err.message)}</p>`);

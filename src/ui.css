@@ -252,9 +252,9 @@ img { display: block; }
 .ep .th .play { position: absolute; inset: 0; margin: auto; opacity: 0; transition: opacity .2s; }
 .ep:hover .th .play { opacity: 1; }
 .ep .tx { flex: 1; min-width: 0; }
-.ep .tx .top { display: flex; justify-content: space-between; gap: 16px; font-weight: 700; font-size: 16px; margin-bottom: 8px; }
-.ep .tx .top span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ep .tx .top span:last-child { font-weight: 400; flex: none; }
+.ep .tx .eprow { display: flex; justify-content: space-between; gap: 16px; font-weight: 700; font-size: 16px; margin-bottom: 8px; }
+.ep .tx .eprow span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ep .tx .eprow span:last-child { font-weight: 400; flex: none; }
 .ep .tx p { margin: 0; color: #d2d2d2; font-size: 14px; line-height: 1.4; }
 .mlt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .mlt .it { background: #2f2f2f; border-radius: 4px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; }
@@ -375,11 +375,15 @@ img { display: block; }
 .w .panel.episodes { width: min(560px, 90vw); }
 .w .panel.episodes .ep { padding: 14px 24px; gap: 16px; border-color: #3a3a3a; }
 .w .panel.episodes .ep .th { width: 120px; }
-.w .panel.episodes .ep .tx .top { font-size: 15px; }
-.w .panel.subs { padding-bottom: 10px; min-width: 260px; }
+.w .panel.episodes .ep .tx .eprow { font-size: 15px; }
+.w .panel.subs, .w .panel.quality { padding-bottom: 12px; min-width: 280px; }
+.w .panel .cols { display: flex; }
+.w .panel .cols .col { min-width: 260px; max-height: 60vh; overflow: auto; }
+.w .panel .cols .col + .col { border-left: 1px solid #3a3a3a; }
+.w .panel .opt small { color: #808080; font-size: .8em; margin-left: 4px; }
 .w .panel .opt { display: flex; align-items: center; gap: 12px; padding: 10px 24px; font-size: 17px; color: #b3b3b3; width: 100%; text-align: left; }
 .w .panel .opt:hover { color: #fff; }
-.w .panel .opt .ic { width: 20px; height: 20px; visibility: hidden; color: #fff; }
+.w .panel .opt .ic { flex: none; width: 20px; height: 20px; visibility: hidden; color: #fff; }
 .w .panel .opt.on { color: #fff; }
 .w .panel .opt.on .ic { visibility: visible; }
 .w .panel .na { padding: 4px 24px 10px; color: #808080; font-size: 14px; }
