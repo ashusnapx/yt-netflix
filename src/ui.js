@@ -84,7 +84,11 @@ function refreshButtons(id) {
 
 const EMBED_ORIGIN = new URL(chrome.runtime.getURL('/')).origin;
 const embeds = new Map(); // contentWindow -> { media, onEnd }
-const cmd = (frame, func, args = []) => frame?.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), EMBED_ORIGIN);
+// A frame that hasn't finished loading preview.html still has youtube.com's origin, and posting to it throws.
+const cmd = (frame, func, args = []) => {
+  if (!frame?.dataset.loaded) return;
+  try { frame.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), EMBED_ORIGIN); } catch { /* frame navigated away */ }
+};
 
 window.addEventListener('message', e => {
   if (e.origin !== EMBED_ORIGIN) return;
@@ -108,6 +112,7 @@ function startPreview(media, id, start = 0, { delay = 900, onEnd } = {}) {
   const timer = setTimeout(() => {
     if (!media.isConnected) return;
     frame.src = `${chrome.runtime.getURL('preview.html')}?${q}`;
+    frame.addEventListener('load', () => { frame.dataset.loaded = '1'; }, { once: true });
     media.prepend(frame);
     embeds.set(frame.contentWindow, { media, onEnd });
   }, delay);

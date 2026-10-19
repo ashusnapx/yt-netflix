@@ -14,17 +14,28 @@ if (/^[\w-]{11}$/.test(id ?? '')) {
   f.allow = 'autoplay; encrypted-media';
   f.src = `${EMBED}/embed/${id}?${params}`;
   document.body.append(f);
-  let heard = false, tries = 0;
-  const ping = setInterval(() => {
-    if (heard || ++tries > 40) return clearInterval(ping);
-    f.contentWindow?.postMessage(JSON.stringify({ event: 'listening', id: 1, channel: 'widget' }), EMBED);
-  }, 250);
+  // Until the embed has loaded, the frame is still an extension-origin blank page and
+  // postMessage to the embed origin throws, so queue commands until 'load'.
+  let loaded = false, heard = false, tries = 0;
+  const queue = [];
+  const send = msg => {
+    if (!loaded) return void queue.push(msg);
+    try { f.contentWindow?.postMessage(msg, EMBED); } catch { /* frame navigated elsewhere (e.g. an error page) */ }
+  };
+  f.addEventListener('load', () => {
+    loaded = true;
+    queue.splice(0).forEach(send);
+    const ping = setInterval(() => {
+      if (heard || ++tries > 40) return clearInterval(ping);
+      send(JSON.stringify({ event: 'listening', id: 1, channel: 'widget' }));
+    }, 250);
+  });
   window.addEventListener('message', e => {
     if (e.source === f.contentWindow && e.origin === EMBED) {
       heard = true;
       parent.postMessage(e.data, 'https://www.youtube.com');
     } else if (e.source === parent && e.origin === 'https://www.youtube.com') {
-      f.contentWindow?.postMessage(e.data, EMBED);
+      send(e.data);
     }
   });
 }
